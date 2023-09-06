@@ -51,7 +51,6 @@
         const objectStore = DB.transaction('crm').objectStore('crm');
         objectStore.openCursor().onsuccess = function(e){
             const cursor = e.target.result;
-            console.log(cursor)
             if(cursor){
                 const { nombre, telefono, empresa, id, email } = cursor.value;
                 listadoClientes.innerHTML += 
