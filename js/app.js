@@ -30,7 +30,7 @@
             objectStore.createIndex('email', 'email', { unique: true });
             objectStore.createIndex('telefono', 'telefono', { unique: false });
             objectStore.createIndex('empresa', 'empresa', { unique: false });
-            objectStore.createIndex('id', 'id', { unique: true });
+            objectStore.createIndex('id', 'id', { unique: false });
 
             console.log('DB lista y creada')
         }
