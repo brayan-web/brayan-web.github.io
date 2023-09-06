@@ -4,7 +4,9 @@
     document.addEventListener('DOMContentLoaded', () => {
     
         crearDB();
-
+        if(window.indexedDB.open('crm', 1)){
+            imprimirCliente();
+        }
         listadoClientes.addEventListener('click', eliminarRegistro);
       
     });
@@ -19,7 +21,7 @@
 
         crearDB.onsuccess = function(){
             DB = crearDB.result;
-            imprimirCliente();
+            
         }
 
         crearDB.onupgradeneeded = function(e){
@@ -30,14 +32,22 @@
             objectStore.createIndex('email', 'email', { unique: true });
             objectStore.createIndex('telefono', 'telefono', { unique: false });
             objectStore.createIndex('empresa', 'empresa', { unique: false });
-            objectStore.createIndex('id', 'id', { unique: false });
+            objectStore.createIndex('id', 'id', { unique: true });
 
             console.log('DB lista y creada')
         }
     }
 
     function imprimirCliente(){
-        //Leer el conetnido de la base de datos
+        const abrirConexion = window.indexedDB.open('crm', 1);
+        abrirConexion.onerror = function(){
+            console.log("Hubo un error")
+        }
+
+        abrirConexion.onsuccess = function(){
+            DB = abrirConexion.result;
+
+                //Leer el conetnido de la base de datos
         const objectStore = DB.transaction('crm').objectStore('crm');
         objectStore.openCursor().onsuccess = function(e){
             const cursor = e.target.result;
@@ -63,8 +73,12 @@
             </tr>
         `;
              cursor.continue();
+            }else{
+                console.log("no hay mas resgistros")
             }
         }
+        }
+    
     }
 
     function eliminarRegistro(e){
